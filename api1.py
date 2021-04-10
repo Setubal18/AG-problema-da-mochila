@@ -103,7 +103,6 @@ def mutacao(lista):
             novaLista.append(cromo)
     return novaLista
     
-
 #Nessa funcao apenas ocorre a inversão de cromossomos. caso ele seja '1' ele vira '0' e virse versa.
 def trocaCromossomo(gene):
     if(gene == '1'):
