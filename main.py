@@ -80,13 +80,14 @@ geracoes = {}
 
 print('populacao:',populacao)
 
-for _ in range(100):
+for _ in range(3):
     fit = fitness(populacao)
     listaOrdenada = sorted(fit, key = lambda x: x[1],reverse=True)
     top3 , geracao = melhores(listaOrdenada)
     print('_________________')
     print('top 3:',top3)
     populacao = cruzamento(top3)
+    print(populacao)
     populacao = mutacao(populacao)
     print('_________________')
     print(populacao)
