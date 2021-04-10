@@ -1,8 +1,6 @@
 from random import randrange
 import random
 
-geracoes = {}
-
 def _gerarIndividuo():
     numero = str(random.random()).split('.')[1]
     pessoa = bin(int(numero)).split('b')[1]
@@ -73,13 +71,17 @@ def historico(lista):
     geracoes[len(geracoes)+1] = lista
 
 populacao = gerarPopulacao()
+geracoes = {}
+
 for _ in range(100):
     fit = fitness(populacao)
     listaOrdenada = sorted(fit, key = lambda x: x[1],reverse=True)
     top3 , geracao = melhores(listaOrdenada)
-    print(top3)
+    print('top 3:',top3)
     novaGeracao=cruzamento(top3)
     novaGeracao = mutacao(novaGeracao)
-    print('------------------')
+    print('_________________')
     print(novaGeracao)
     historico(geracao)
+    print('_________________')
+    print(geracoes)
