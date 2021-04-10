@@ -18,18 +18,24 @@ def fitness(populacao):
     for numero,gene in enumerate(populacao):
         beneficio,custo = 0,0
         for i,g in enumerate(gene):
-            if(g=='1'):
+            if(g == '1'):
                 beneficio+=aptidao[i][0]
                 custo+=aptidao[i][1]
-        if(custo>22):
-            print(f'custo:{custo}; Beneficio: {beneficio}; nota: {round(custo/beneficio,2)}; Gene: {gene}')
-            nota = round(custo/beneficio,2)
-            fit.append([gene,nota])
-        else:
-            print(f'custo:{custo}; Beneficio: {beneficio}; nota: {round(custo/beneficio,2) + 0.10 }; Gene: {gene}')
-            nota = round(custo/beneficio,2) + 0.10
-            fit.append([gene,nota])
+        nota = calculaFit(custo,beneficio)
+        print(f'custo:{custo}; Beneficio: {beneficio}; nota: {nota}; Gene: {gene}')
+        fit.append([gene,nota])
     return fit
+
+def calculaFit(custo,beneficio):
+    if(beneficio ==0 ):
+        return 0
+    else:
+        if(custo>22):
+            nota = custo/beneficio
+            return round(nota,2)
+        else:
+            nota = (custo/beneficio) + 0.10
+            return round(nota,2)
 
 def cruzamento(lista):
     filhos = []
@@ -78,13 +84,13 @@ for _ in range(100):
     fit = fitness(populacao)
     listaOrdenada = sorted(fit, key = lambda x: x[1],reverse=True)
     top3 , geracao = melhores(listaOrdenada)
-    print('_________________')
-    print('top 3:',top3)
+    #print('_________________')
+    #print('top 3:',top3)
     populacao = cruzamento(top3)
     populacao = mutacao(populacao)
-    print('_________________')
-    print(populacao)
+    #print('_________________')
+    #print(populacao)
     historico(geracao)
-    print('_________________')
-    print(geracoes)
-    print('==============================')
+    #print('_________________')
+    #print(geracoes)
+    #print('==============================')
