@@ -47,7 +47,6 @@ def mutacao(lista):
     for cromo in lista:
         novoGene = ''
         change = randrange(0,5)
-        print(change)
         for i,gene in enumerate(cromo):
             if(i == change):
                 gene = trocaCromossomo(gene)
@@ -73,10 +72,13 @@ def historico(lista):
 populacao = gerarPopulacao()
 geracoes = {}
 
+print('populacao:',populacao)
+
 for _ in range(100):
     fit = fitness(populacao)
     listaOrdenada = sorted(fit, key = lambda x: x[1],reverse=True)
     top3 , geracao = melhores(listaOrdenada)
+    print('_________________')
     print('top 3:',top3)
     novaGeracao=cruzamento(top3)
     novaGeracao = mutacao(novaGeracao)
@@ -85,3 +87,4 @@ for _ in range(100):
     historico(geracao)
     print('_________________')
     print(geracoes)
+    print('==============================')
