@@ -1,6 +1,5 @@
 from random import randrange,random
 
-
 def get_itens():
     return {
         0:{'name':'Cachorro-Quente','values':[3,4]}, 
@@ -20,7 +19,7 @@ def _gerarIndividuo():
     return pessoa[0:8]
 
 #aqui defini qual a quantidade total da minha população
-def gerarPopulacao(quantidade=8):
+def gerarPopulacao(quantidade=10):
     populacao = []
     for i in range(quantidade):
         populacao.append(_gerarIndividuo())
@@ -42,21 +41,19 @@ def fitness(populacao):
         fit.append([gene,nota,carga])
     return fit
 
-#Já nessa função eu execulto o calculo do fit, sendo que caso o grau de dificuldade passe de 25 a nota receba uma penalização de 0.10
-#Caso ele tenha exatos 25 de grau de dificuldade ele não recebe nenhum bonus, mas caso ele consiga menos ele recebe um bonus de 0.11
+# Já nessa função eu execulto o calculo do fit, sendo que caso o grau de dificuldade passe de 25 a nota receba uma penalização de 0.1
+# Caso ele tenha exatos 25 de grau de dificuldade ele não recebe nenhum bonus, mas caso ele consiga menos ele recebe um bonus de 0.1,
+# para o calculo apenas pego o bonus total e divido por 100.
 def calculaFit(bonus,grauDeDificuldade):
-    if(grauDeDificuldade == 0 ):
-        return 0
+    if(grauDeDificuldade>25):
+        nota = (bonus/100) - (-0.1)
+        return round(nota,2)
+    if (grauDeDificuldade == 25):
+            nota = (bonus/100)
+            return round(nota,2) 
     else:
-        if(grauDeDificuldade>25):
-            nota = (bonus/grauDeDificuldade) - 0.10
-            return round(nota,2)
-        if (grauDeDificuldade == 25):
-             nota = (bonus/grauDeDificuldade)
-             return round(nota,2)
-        else:
-            nota = (bonus/grauDeDificuldade) + 0.11
-            return round(nota,2)
+        nota = (bonus/100) + 0.1
+        return round(nota,2)
 
 #Apenas formata a string de carga 
 def montarCarga(item,carga):
@@ -74,13 +71,13 @@ def melhores(listaOrdenada,qtd=3):
     return top, listaOrdenada[:qtd]
 
 #No cruzamento escolhi por utilizar 4 genes dos mais do inicio e final, depois realizo a mesma coisa ao contrario, sendo q cada par de pais geram dois filhos
-#Sendo assim, no final gero denovo a mesma população inicial de 8 individuos
+#Sendo assim, no final gero denovo a mesma população inicial de 10 individuos
 def cruzamento(lista):
     filhos = []
     for i in range(len(lista)):
         if(i+1 == len(lista)):
-            filhos.append(lista[i][:4] + lista[i-1][4::])
-            filhos.append(lista[i-1][:4] + lista[i][4::])
+            filhos.append(lista[i][:4] + lista[i-2][4::])
+            filhos.append(lista[i-2][:4] + lista[i][4::])
         else:
             filhos.append(lista[i][:4] + lista[i+1][4::])
             filhos.append(lista[i+1][:4] + lista[i][4::])
@@ -124,11 +121,11 @@ populacao = gerarPopulacao()
 geracoes = []
 
 for _ in range(10):
-    print(f'{_} populacao:',populacao)
+    print(f'{_} populacao: {populacao}')
     fit = fitness(populacao)
     #Aqui apenas ordeno pela nota deixando o com maior nota no topo
     listaOrdenada = sorted(fit, key = lambda x: x[1],reverse=True)
-    top , geracao = melhores(listaOrdenada,qtd=4)
+    top , geracao = melhores(listaOrdenada,qtd=5)
     geracoes.append(geracao)
     populacao = cruzamento(top)
     populacao = mutacao(populacao)
